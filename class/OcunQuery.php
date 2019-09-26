@@ -20,7 +20,7 @@ class OcunQuery implements OcunQueryInterface {
   //Retorna as raízes pedindo os morfemas cujo significado total não tem correspondência em f_meaning
   //e a parte inicial do significado, até o primeiro ponto (.), também não.
   //Casos como raiz.FUNCIONAL apareceriam na consulta. A consulta excluiria casos como FUNCIONAL.raiz,
-  //que, a princípio, não parecem existir nas gramáticas pois não fazem sentido.
+  //que, a princípio, não parecem existir nas gramáticas.
   public function root(){
     $sql = "SELECT * FROM `pool` WHERE `source_id`=". $this->sourceID . " AND SUBSTRING_INDEX(`meaning`, '.',1)
     NOT IN (SELECT `abbreviation` FROM `f_meaning` WHERE `source_id`=" . $this->sourceID . ") AND `meaning`
@@ -69,7 +69,9 @@ class OcunQuery implements OcunQueryInterface {
     return json_encode($this->OcunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC));
   }
 
+  //Retorna a lista de sentenças da gramática, com os códigos das palavras e morfemas.
   public function sentence(){
+    
 
   }
 
