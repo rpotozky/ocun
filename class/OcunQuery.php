@@ -13,8 +13,8 @@ class OcunQuery implements OcunQueryInterface {
   //Pega lista de significados funcionais e abreviações da gramática fonte.
   //Retorna objeto JSON com os dados.
   public function functional(){
-    $sql = "SELECT * FROM `f_meaning` WHERE `source_id`=" . $this->source_ID;
-    return json_encode($this->OcunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC));
+    $sql = "SELECT * FROM `f_meaning` WHERE `source_id`=" . $this->sourceID;
+    return json_encode($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC));
   }
 
   //Retorna as raízes pedindo os morfemas cujo significado total não tem correspondência em f_meaning
@@ -39,7 +39,7 @@ class OcunQuery implements OcunQueryInterface {
 
   //Retorna a tabela com palavras contendo o significado solicitado
   public function wordPattern($meaning){
-    $sql = "SELECT DISTINCT `m_chain`.`word_id` AS `word`, `m_chain`.`ord` AS `order`,
+    $sql = "SELECT DISTINCT `m_chain`.`word_id` AS `word`, `m_chain`.`word_id` AS `word`, `m_chain`.`ord` AS `order`,
     `pool`.`meaning` AS `meaning`, `pool`.`form` AS `form`
     FROM `m_chain`, `pool`
     WHERE `m_chain`.`morpheme_id`=`pool`.`id`
@@ -50,12 +50,12 @@ class OcunQuery implements OcunQueryInterface {
       AND `pool`.`source_id`='".  $this->sourceID . "'
       AND `pool`.`meaning`='" . $meaning .  "')
     ORDER BY `m_chain`.`word_id` ASC";
-    return json_encode($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC));
+    return json_encode(array_values($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC)));
   }
 
   //Retorna a tabela com palavras contendo a forma fonológica solicitada
   public function realization($phonologicalForm){
-    $sql = "SELECT DISTINCT `m_chain`.`word_id` AS `word`, `m_chain`.`ord` AS `order`,
+    $sql = "SELECT DISTINCT `m_chain`.`word_id` AS `word`, `m_chain`.`word_id` AS `word`, `m_chain`.`ord` AS `order`,
     `pool`.`meaning` AS `meaning`, `pool`.`form` AS `form`
     FROM `m_chain`, `pool`
     WHERE `m_chain`.`morpheme_id`=`pool`.`id`
@@ -66,7 +66,7 @@ class OcunQuery implements OcunQueryInterface {
       AND `pool`.`source_id`='".  $this->sourceID . "'
       AND `pool`.`form`='" . $phonologicalForm .  "')
     ORDER BY `m_chain`.`word_id` ASC";
-    return json_encode($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC));
+    return json_encode(array_values($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC)));
   }
 
   //Retorna a lista de sentenças da gramática, com os códigos das palavras e morfemas.
