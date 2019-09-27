@@ -17,8 +17,9 @@ $sentence = $qu->sentence();
 
 <script>
   const sentence = <?= $sentence ?>;
+  var idbs = 22;
   function groupID(obj) {
-    if (obj.id == 21){
+    if (obj.id == idbs){
       return obj;
     }
   }
