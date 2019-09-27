@@ -79,7 +79,7 @@ class OcunQuery implements OcunQueryInterface {
     AND `w_chain`.`word_id` = `m_chain` . `word_id`
     AND `m_chain`.`morpheme_id` = `pool`.`id`
     ORDER BY `phrase`.`id` ASC";
-    return json_encode($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC));
+    return json_encode(array_values($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC)));
   }
 }
 

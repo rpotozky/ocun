@@ -15,17 +15,28 @@ $sentence = $qu->sentence();
 
 ?>
 
+<div id="sentence_list">
+  <p>Sentences List: </p>
+
+</div>
+
 <script>
   const sentence = <?= $sentence ?>;
-  var idbs = 22;
-  function groupID(obj) {
-    if (obj.id == idbs){
-      return obj;
+
+  for(let i = 0; i < sentence.length; i++){
+    document.getElementById("sentence_list").innerHTML += "<p style='border-style: solid; margin: 6px;'>";
+    var str = "";
+    for (let j = 0; j < sentence[i].length; j++){
+      str += "<button><p>" + sentence[i][j].form + "</p><p>" + sentence[i][j].meaning + "</p></button>";
     }
+    document.getElementById("sentence_list").innerHTML += str + "</p>" +
+    "<p><button>" + sentence[i][0].translation + "</button></p>";
   }
-  var pen = sentence.filter(groupID);
 
 
-  console.log(pen);
+
+
   console.log(sentence);
+
+
 </script>
