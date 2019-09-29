@@ -60,6 +60,11 @@ class OcunUserDataBase implements OcunUserDataBaseInterface {
 
   }
 
+  //buscar dado específico
+  public function fetch($sql){
+    return $this->connect()->query($sql)->fetch(PDO::FETCH_ASSOC);
+  }
+
 }
 
 
