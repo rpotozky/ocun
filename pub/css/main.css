@@ -1,0 +1,177 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+
+}
+
+html {
+  font-size: 14pt;
+  font-family: 'Montserrat', sans-serif;
+  background-color: white;
+}
+
+b {
+  font-weight: bold;
+}
+
+em {
+  font-style: italic;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 2rem;
+  padding: 5px;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 5px;
+}
+
+p {
+  padding: 5px;
+  line-height: 1.5rem;
+  margin-bottom: 5px;
+}
+
+li {
+  margin-left: 50px;
+  padding: 5px;
+}
+
+div {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+a {
+  color: 	#ff5700;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #aaaaaa;
+}
+
+button {
+  background-color: #ffd700;
+  color: black;
+  border: solid;
+  border-radius: 5px;
+  padding: 10px;
+  border-weight: normal;
+  border-color: black;
+}
+
+button:hover {
+  background-color: #aaaaaa;
+}
+
+input {
+  background-color: white;
+  color: black;
+  border: solid;
+  border-radius: 5px;
+  padding: 10px;
+  border-weight: normal;
+  border-color: black;
+}
+
+input:hover {
+  background-color: #aaaaaa;
+}
+
+input:disabled{
+  color: #aaaaaa;
+}
+input:disabled:hover{
+  background-color: white;
+}
+
+header {
+  position: fixed;
+  background-color: black;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.topnav {
+  overflow: hidden;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.topnav img{
+  vertical-align: middle;
+  line-height: 2rem;
+  float: left;
+
+}
+
+.topnav a {
+  float: left;
+  color: white;
+  padding-left: 10px;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+.topnav a:hover {
+  color: #ddd;
+}
+
+.topnav-right a {
+  font-size: 1rem;
+  float: right;
+}
+
+
+#content {
+  margin-top: 4rem;
+  margin-bottom: 8rem;
+}
+
+section {
+  max-width: 1200px;
+  margin: auto;
+}
+
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #aaaaaa;
+  color: black;
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+#welcome-text {
+  max-width: 550px;
+  float: left;
+  padding: 90px;
+  margin-top: 50px;
+}
+
+#welcome-login {
+  margin-top: 140px;
+  margin-bottom: 90px;
+  border-radius: 10px;
+  max-width: 550px;
+  float: left;
+  padding: 90px;
+  background-color: 	#fffff0;
+}

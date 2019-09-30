@@ -74,7 +74,10 @@ class OcunController implements OcunControllerInterface {
   //Home page, for logged users.
   public function home() {
     if (isset($_SESSION['user'])) {
-      return $this->loadTemplate("home.php");
+      return $this->loadTemplate("layout.php",[
+        'page' => "home.php",
+        'title' => "òcun - Bem-vindo à área do usuário"
+      ]);
     }
     else {
       header('Location: index.php');
@@ -109,6 +112,7 @@ class OcunController implements OcunControllerInterface {
       $sourceList = $db->query("SELECT * FROM `source`")->fetchAll(PDO::FETCH_ASSOC);
       return $this->loadTemplate("layout.php", [
         'page' => "query.php",
+        'title' => "òcun - Consulta aos dados",
         'languageList' => $languageList,
         'sourceList' => $sourceList
       ]);

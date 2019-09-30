@@ -2,13 +2,20 @@
 <html>
   <head>
     <title>Registre-se na plataforma Òcun</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:500,500i,700&display=swap&subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/query.css">
   </head>
 <body>
   <header>
+    <div class='topnav'>
       <img src="svg/logo.svg">
-      <p>òcun</p>
+      <a href="index.php">òcun</a>
+      <div class='topnav-right'>
+    </div>
   </header>
   <body>
+    <div id="content">
     <section id="register-main">
       <h1>Registre-se!</h1>
       <p>Para acessar a plataforma Òcun, pedimos que novos usuários se registrem, fornecendo seu email e nome.
@@ -20,13 +27,15 @@
         <input id="register-form-password" type="password" placeholder="digite sua senha" required>
         <input id="register-form-password-retype" type="password" name="password" onfocusout="CheckPassword(this.value)" placeholder="confirme sua senha" required>
         <p id="password-status"></p>
-        <input type="text" name="name" placeholder="informe seu nome completo" onkeyup="CheckName(this.value)" required>
+        <input type="text" name="name" placeholder="informe seu nome completo" onkeyup="CheckName(this.value)" style="width: 400px;" required>
         <input id="register-form-submit" type="submit" value="Registrar">
       </form>
+    </section>
+  </div>
   </body>
   <footer>
     <p>Ocun v0.2.0</p>
-    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>
+    <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>
   </footer>
   <script>
     var ckEmail = false;

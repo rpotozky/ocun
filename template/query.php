@@ -1,4 +1,6 @@
 <section id="source-panel">
+  <h1>Consulta aos dados </h1>
+  <p>Selecione a língua abaixo: </p>
   <nav id="language-select">
     <?php foreach($languageList as $language): ?>
       <button class="button-language-select" onclick="languageSelect('<?=$language['code']?>')"><?= $language['name'] . " - " . $language['code']?></button>
@@ -22,23 +24,14 @@
   </article>
 </section>
 
-
+<script type="text/javascript" src="js/sentence.js"></script>
+<script type="text/javascript" src="js/ajax.js"></script>
+<script type="text/javascript" src="js/stats.js"></script>
 <script type="text/javascript">
 var languageList = <?= json_encode($languageList) ?>;
 var sourceList = <?= json_encode($sourceList) ?>;
 
 languageSelect(0);
-
-function Ajax(action, resp){
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        resp(this.responseText);
-    }
-  };
-  xmlhttp.open("GET", action, true);
-  xmlhttp.send();
-}
 
 function languageSelect(language){
   if (language == 0){
@@ -114,161 +107,26 @@ function RootDisplay(source){
   }
 }
 
+
+
 function SentenceDisplay(source){
   Ajax("ajax.php?action=getSentence&id=" + source, display);
   document.getElementById("current-action-title").innerHTML = "Frases na Língua";
   document.getElementById("dashboard-panel").innerHTML = "carregando..."
   function display(resp) {
-    document.getElementById("dashboard-panel").innerHTML = "";
     var functional = JSON.parse(resp);
-    sentence = sentenceBuild(functional);
-    for (i in sentence){
-      document.getElementById("dashboard-panel").innerHTML += sentence[i];
-    }
-  }
-}
-
-
-function getAllomorph(id, meaning){
-  Ajax("ajax.php?action=getAllomorph&id=" + id + "&meaning=" + meaning, myFunc);
-  document.getElementById("current-action-title").innerHTML = "<h1>Morfemas com o significado \"" + meaning + "\"";
-  document.getElementById("dashboard-panel").innerHTML = "carregando..."
-  function myFunc(resp) {
-    data = JSON.parse(resp);
-    document.getElementById("dashboard-panel").innerHTML = "";
-    for (i in data){
-      str = "<button onclick='calculateMorphemeStats(" + id + ", " + JSON.stringify(data[i]) + ", 1)'>" + data[i].form + "</button>";
-      document.getElementById("dashboard-panel").innerHTML += str;
-
-    }
-    document.getElementById("dashboard-panel").innerHTML += "<div id='statistics-1'></div>";
-  }
-}
-
-function sentenceBuild(sentenceBase){
-  var disp = [];
-  var backgroundColor = ["#82b2b8", "#b88882"];
-  var currentColor = 0;
-  var wordId = 0;
-  var str = "";
-  function getColor(changeColor){
-    if(changeColor){
-      if (currentColor == (backgroundColor.length - 1)) {
-        currentColor = 0;
+    sentence = new SentenceBuild(functional);
+    document.getElementById("dashboard-panel").innerHTML = "<h2>Total de frases: " + sentence.datasize + "</h2>";
+    showSentence = function (){
+      sentence.next();
+      for (i in sentence.disp){
+        document.getElementById("dashboard-panel").innerHTML += sentence.disp[i];
       }
-      else {
-        currentColor++;
+      if (sentence.getRemainingNumber() > 0) {
+        document.getElementById("dashboard-panel").innerHTML += "<button onclick=showSentence()>Restam mais <b>" + sentence.getRemainingNumber() + "</b> frases. Clique aqui para carregar mais!</button><br><br>";
       }
-    }
-    return currentColor;
-  }
-  for(i in sentenceBase){
-   for (j in sentenceBase[i]){
-    if(sentenceBase[i][j].word_id == wordId){
-      changeColor = false;
-    }
-    else {
-      changeColor = true;
-    }
-    str += "<button style='background-color: " + backgroundColor[getColor(changeColor)] + "'" +
-    "onclick='getAllomorph(" +
-    sentenceBase[i][j].source_id +
-    ", \"" +
-    sentenceBase[i][j].meaning +
-    "\")'>" +
-    "<p>" + sentenceBase[i][j].form + "</p>" +
-    "<p>" + sentenceBase[i][j].meaning + "</p>" +
-    "</button></div>";
-    wordId = sentenceBase[i][j].word_id;
-    }
-    str += "<br><button><p>" + sentenceBase[i][0].translation + "</p></button><br><br>"
-    disp.push(str);
-    str = "";
-
- }
- return disp;
-}
-
-function sentenceFilter(source, morpheme, span){
-  Ajax("ajax.php?action=getSentence&id=" + source, display);
-  document.getElementById("statistics-filter-" + span).innerHTML = "carregando...";
-  function display(resp) {
-    document.getElementById("statistics-filter-" + span).innerHTML = "";
-    var functional = JSON.parse(resp);
-    var filtered = [];
-    for (i in functional){
-      for (j in functional[i]){
-        if (functional[i][j].morpheme_id == morpheme.id){
-          filtered.push(functional[i]);
-        }
-      }
-    }
-    sentence = sentenceBuild(filtered);
-    document.getElementById("statistics-filter-" + span).innerHTML = "<h1>Total de frases: " + sentence.length + "</h1>";
-    for (let i = 0; i < sentence.length; i++){
-      document.getElementById("statistics-filter-" + span).innerHTML += sentence[i];
-    }
-  }
-}
-
-function wordFilter(source, morpheme, span) {
-  Ajax("ajax.php?action=getSentence&id=" + source, display);
-  document.getElementById("statistics-filter-" + span).innerHTML = "carregando...";
-  function display(resp) {
-    var functional = JSON.parse(resp);
-    var filtered = [];
-    var wordIds = [];
-    for (i in functional){
-      for (j in functional[i]){
-        if (functional[i][j].morpheme_id == morpheme.id){
-          worddIds.push(functional[i][j].word_id);
-        }
-      }
-    }
-
-    console.log(filtered);
-    sentence = sentenceBuild(filtered);
-    for (let i = 0; i < sentence.length; i++){
-      document.getElementById("statistics-filter-" + span).innerHTML += sentence[i];
-    }
-  }
-}
-
-function calculateMorphemeStats(source, morpheme, span){
-  var morphemeMatch = 0;
-  var morphemeCount = 0;
-  var allomorph = 0;
-  var homonym = 0;
-  Ajax("ajax.php?action=getSentence&id=" + source, display);
-  function display(resp) {
-    var functional = JSON.parse(resp);
-    for (i in functional){
-      for (j in functional[i]) {
-        morphemeCount++;
-        if (functional[i][j].morpheme_id == morpheme.id) {
-          morphemeMatch++;
-        }
-        if (functional[i][j].meaning == morpheme.meaning) {
-          allomorph++;
-        }
-        if (functional[i][j].form == morpheme.form){
-          homonym++;
-        }
-      }
-    }
-    document.getElementById("statistics-" + span).innerHTML = "<h1>Morfema #" + morpheme.id + "</h1>" +
-    "<p><b>Forma fonológica: </b>" + morpheme.form + "</p>" +
-    "<p><b>Significado: </b>" + morpheme.meaning + "</p>" +
-    "<p>Algumas estatísticas: </p>" +
-    "<ul>" +
-    "<li>Ocorrências no corpus: " + morphemeMatch + "/" + morphemeCount + " ou " +  (morphemeMatch/morphemeCount) + "</li>" +
-    "<li>Proporção entre alomorfes: " + morphemeMatch + "/" + allomorph + " ou " + (morphemeMatch/allomorph) + "</li>" +
-    "<li>Proporção entre homonimos: " + morphemeMatch + "/" + homonym + " ou " + (morphemeMatch/homonym) + "</li>" +
-    "</ul>" +
-    "<button onclick='sentenceFilter(" + source + ", " + JSON.stringify(morpheme) + ", " + morpheme.id +")'>Frases com este morfema</button>" +
-    "<button onclick='wordFilter(" + source + ", " + JSON.stringify(morpheme) + ", " + morpheme.id +")'>Palavras com este morfema</button>" +
-    "<div id='statistics-filter-" + morpheme.id + "'></div>";
-
+    };
+    showSentence();
   }
 }
 

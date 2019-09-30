@@ -1,0 +1,15 @@
+#sentence-button-color-0 {
+  background-color: #00ffd7; /*#82b2b8;*/
+}
+
+#sentence-button-color-1 {
+  background-color: #a8ff00; /*#b88882;*/
+}
+
+#sentence-button-color-0:hover {
+  background-color: #aaaaaa;
+}
+
+#sentence-button-color-1:hover {
+  background-color: #aaaaaa; /*#b88882;*/
+}
