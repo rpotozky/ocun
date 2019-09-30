@@ -19,6 +19,47 @@ class OcunAjax {
     return "false";
   }
 
+  public function getFunctional() {
+    if (isset($_GET['id'])) {
+      $db = new OcunDataBase($this->ocunException);
+      $qu = new OcunQuery($db, $_GET['id']);
+      return json_encode($qu->functional());
+    }
+  }
+
+  public function getRoot() {
+    if (isset($_GET['id'])) {
+      $db = new OcunDataBase($this->ocunException);
+      $qu = new OcunQuery($db, $_GET['id']);
+      return json_encode($qu->root());
+    }
+  }
+
+  public function getSentence() {
+    if (isset($_GET['id'])) {
+      $db = new OcunDataBase($this->ocunException);
+      $qu = new OcunQuery($db, $_GET['id']);
+      return json_encode($qu->sentence());
+    }
+  }
+
+  public function getAllFixedData() {
+    if (isset($_GET['id'])) {
+      $db = new OcunDataBase($this->ocunException);
+      $qu = new OcunQuery($db, $_GET['id']);
+      return json_encode([$qu->functional(), $qu->root(), $qu->sentence()]);
+    }
+  }
+
+  public function getAllomorph() {
+    if (isset($_GET['meaning']) && isset($_GET['id'])) {
+      $db = new OcunDataBase($this->ocunException);
+      $qu = new OcunQuery($db, $_GET['id']);
+      return json_encode($qu->allomorph($_GET['meaning']));
+    }
+  }
+
+
 }
 
 

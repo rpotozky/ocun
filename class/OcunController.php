@@ -104,7 +104,14 @@ class OcunController implements OcunControllerInterface {
   //Loads app for querying linguistic data
   public function queryData() {
     if (isset($_SESSION['user'])) {
-      return $this->loadTemplate("query.php");
+      $db = new OcunDataBase($this->ocunException);
+      $languageList = $db->query("SELECT * FROM `language`")->fetchAll(PDO::FETCH_ASSOC);
+      $sourceList = $db->query("SELECT * FROM `source`")->fetchAll(PDO::FETCH_ASSOC);
+      return $this->loadTemplate("layout.php", [
+        'page' => "query.php",
+        'languageList' => $languageList,
+        'sourceList' => $sourceList
+      ]);
     }
     else {
       header('Location: index.php');
