@@ -15,7 +15,7 @@ class OcunDataBase implements OcunDataBaseInterface {
   private function connect(){
     // Conecta no banco de dados. No servidor ocun.latip.com.br, mudar os dados de conexão e usar utf8-mb4.
     try{
-      //$this->pdo = new PDO('mysql:host=localhost;dbname=latip_ocun_t_2;charset=utf8mb4', 'ocun','latip_2019');
+      //Variáveis de conexão estão no arquivo langserv.conf
       include __DIR__ . '/../servinfo/langserv.conf';
       $this->pdo = new PDO($servData, $usrName, $usrPassword);
       $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
