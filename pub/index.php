@@ -1,5 +1,3 @@
-<!-- This is a test page -->
-
 <?php
 
 // autoload

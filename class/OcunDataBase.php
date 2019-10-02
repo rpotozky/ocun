@@ -9,12 +9,15 @@ class OcunDataBase implements OcunDataBaseInterface {
   public function __construct(OcunException $ocunException) {
     $this->ocunException = $ocunException;
     $this->connect();
+
   }
 
   private function connect(){
     // Conecta no banco de dados. No servidor ocun.latip.com.br, mudar os dados de conexão e usar utf8-mb4.
     try{
-      $this->pdo = new PDO('mysql:host=localhost;dbname=latip_ocun_t_2;charset=utf8mb4', 'ocun','latip_2019');
+      //$this->pdo = new PDO('mysql:host=localhost;dbname=latip_ocun_t_2;charset=utf8mb4', 'ocun','latip_2019');
+      include __DIR__ . '/../servinfo/langserv.conf';
+      $this->pdo = new PDO($servData, $usrName, $usrPassword);
       $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){

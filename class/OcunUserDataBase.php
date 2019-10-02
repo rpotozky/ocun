@@ -10,7 +10,9 @@ class OcunUserDataBase implements OcunUserDataBaseInterface {
   }
 
   private function connect() {
-    $pdo = new PDO('mysql:host=localhost;dbname=latip_user;charset=utf8', 'ocun','latip_2019');
+    //$pdo = new PDO('mysql:host=localhost;dbname=latip_user;charset=utf8', 'ocun','latip_2019');
+    include __DIR__ . '/../servinfo/usrserv.conf';
+    $pdo = new PDO($servData, $usrName, $usrPassword);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $pdo;
   }
