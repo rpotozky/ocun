@@ -19,6 +19,24 @@ class OcunAjax {
     return "false";
   }
 
+  public function getUserNotes() {
+    if (isset($_GET['email'])) {
+      $db = new OcunUserDataBase($this->ocunException);
+      $qu = "SELECT `notes` FROM `user` WHERE `email` = '" . $_GET['email'] . "'";
+      return json_encode($db->fetch($qu));
+    }
+    return json_encode(["fail"]);
+  }
+
+  public function setUserNotes() {
+    if (isset($_POST['email']) && isset($_POST['notes'])) {
+      $db = new OcunUserDataBase($this->ocunException);
+      $db->saveNotes($_POST['email'], $_POST['notes']);
+      return json_encode(["success"]);
+    }
+    return json_encode(["fail"]);
+  }
+
   public function getFunctional() {
     if (isset($_GET['id'])) {
       $db = new OcunDataBase($this->ocunException);

@@ -6,10 +6,12 @@ interface OcunQueryInterface{
   // as funções deverão retornar um objeto JSON com os dados.
   public function functional();
   public function root();
-  public function allomorph($functionalMeaning);
-  public function wordPattern($meaning);
-  public function realization($phonologicalForm);
   public function sentence();
+  public function allomorph($meaning);
+  public function homonym($form);
+  public function morpheme($form, $meaning);
+  public function word($wordId);
+  public function morphemeInSentence($form, $meaning);
 
 }
 

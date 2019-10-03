@@ -49,6 +49,19 @@ class OcunUserDataBase implements OcunUserDataBaseInterface {
 
   }
 
+  public function saveNotes($email, $notes){
+    try {
+      $sql = 'UPDATE `user` SET `notes` = :gnotes WHERE `email` = "' . $email . '"';
+      $stmt = $this->connect()->prepare($sql);
+      $stmt->bindValue(':gnotes', $notes);
+      $stmt->execute();
+    }
+    catch(PDOException $e){
+      $this->ocunException->display($e);
+    }
+
+  }
+
   //muda a senha para um email
   public function changePassword($email, $passwordString){
     $passwordHash = password_hash($passwordString, PASSWORD_BCRYPT);
