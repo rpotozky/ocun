@@ -99,6 +99,7 @@ input:disabled:hover{
 
 header {
   position: fixed;
+  z-index: 2;
   background-color: #333333;
   width: 100%;
   top: 0;

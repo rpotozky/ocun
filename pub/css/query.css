@@ -1,6 +1,7 @@
 .flex-container {
   display:flex;
   flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .workspace {
@@ -8,12 +9,36 @@
   border-radius: 5px;
   border-color: #222222;
   border-width: thin;
-  padding: 10px;
+  padding: 0px;
   background-color: #ffffff;
-  width: 40%;
-  min-width: 300px;
+  width: 100%;
   max-height: 70vh;
   overflow: scroll;
+}
+
+.workspace-menu {
+  margin-top: 0;
+  position: -webkit-sticky;
+  background-color: #333333;
+  padding: 5px;
+  position: sticky;
+  top: 0;
+}
+
+.workspace-menu button {
+  color: white;
+  background-color: #333333;
+
+}
+
+.workspace-menu button:hover {
+  color: black;
+  background-color: white;
+
+}
+
+.workspace-content {
+  margin: 10px;
 }
 
 .workspace-notes {
@@ -46,13 +71,40 @@
 }
 
 .sentence {
-  padding: 10px;
+  padding: 10px 10px 10px 10px;
   margin: 3px;
   border-radius: 5px;
-  background-color: #b8b8b8;
+  background-color: #ffffff;
 }
 
+.button-sentence {
+  padding: 2px;
+  margin-bottom: 2px;
+  background-color: white;
+}
+.button-sentence p {
+  padding: 2px;
+  margin: 0;
+  line-height: 14pt;
+  text-align: left;
+}
 
+.button-sentence-translation p {
+  padding: 2px;
+  margin: 0;
+  line-height: 12pt;
+  text-align: left;
+}
+.button-send-to-notes {
+  background-color: white;
+}
+.button-send-to-notes p {
+  padding: 2px;
+  color: black;
+  margin: 0;
+  line-height: 12pt;
+  text-align: left;
+}
 /*
 Deprecated code...
 

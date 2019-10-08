@@ -30,7 +30,7 @@ class OcunQuery implements OcunQueryInterface {
 
   //Retorna a lista de sentenças da gramática, com os códigos das palavras e morfemas.
   public function sentence(){
-    $sql = "SELECT DISTINCT `w_chain`.`phrase_id` AS `id`, `phrase`.`translation` AS `translation`,
+    $sql = "SELECT DISTINCT `w_chain`.`phrase_id` AS `id`, `w_chain`.`phrase_id` AS `phrase_id`, `phrase`.`translation` AS `translation`,
     `w_chain`.`word_id` AS `word_id`, `m_chain`.`morpheme_id` AS `morpheme_id`, `pool`.`form` AS `form`,
     `pool`.`meaning` AS `meaning`, `phrase`.`source_id` AS `source_id` FROM `phrase`, `w_chain`, `m_chain`, `pool`
     WHERE `phrase`.`source_id` = '" . $this->sourceID . "'
@@ -66,17 +66,18 @@ class OcunQuery implements OcunQueryInterface {
     return $this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  //palavra por id
-  public function word($wordId){
+  //palavra
+  public function word(){
     $sql = "SELECT DISTINCT `m_chain`.`word_id` AS `word`,
+    `m_chain`.`word_id` AS `word`,
     `m_chain`.`ord` AS `order`,
     `m_chain`.`morpheme_id` AS `morpheme_id`,
     `pool`.`meaning` AS `meaning`,
     `pool`.`form` AS `form`
     FROM `m_chain`, `pool`
     WHERE `m_chain`.`morpheme_id`=`pool`.`id`
-    AND `m_chain`.`word_id` = '" . $wordId ."'
-    ORDER BY `m_chain`.`word_id` ASC";
+    AND `pool`.`source_id` = '" . $this->sourceID . "'
+    ORDER BY `m_chain`.`word_id` ASC, `m_chain`.`ord` ASC";
     return array_values($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC));
   }
 

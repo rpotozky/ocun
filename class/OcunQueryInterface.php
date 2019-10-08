@@ -10,7 +10,7 @@ interface OcunQueryInterface{
   public function allomorph($meaning);
   public function homonym($form);
   public function morpheme($form, $meaning);
-  public function word($wordId);
+  public function word();
   public function morphemeInSentence($form, $meaning);
 
 }
