@@ -1,9 +1,119 @@
+.flex-container {
+  display:flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.workspace {
+  border: solid;
+  border-radius: 5px;
+  border-color: #222222;
+  border-width: thin;
+  padding: 0px;
+  background-color: #ffffff;
+  width: 100%;
+  max-height: 70vh;
+  overflow: scroll;
+}
+
+.workspace-menu {
+  margin-top: 0;
+  position: -webkit-sticky;
+  background-color: #333333;
+  padding: 5px;
+  position: sticky;
+  top: 0;
+}
+
+.workspace-menu button {
+  color: white;
+  background-color: #333333;
+
+}
+
+.workspace-menu button:hover {
+  color: black;
+  background-color: white;
+
+}
+
+.workspace-content {
+  margin: 10px;
+}
+
+.workspace-notes {
+  background-color: white;
+  font-family: monospace;
+  padding: 5px;
+  border: solid;
+  border-width: thin;
+  border-color: #aaaaaa;
+  border-radius: 5px;
+  max-height: 60vh;
+  overflow: scroll;
+  transition: border-color 0.5s;
+}
+
+.source-list {
+  padding: 10px;
+  margin: 3px;
+  border: solid;
+  border-width: thin;
+  border-color: #b8b8b8;
+  border-radius: 5px;
+}
+
+.button-morpheme {
+  padding: 5px;
+  min-width: 100px;
+  background-color: #66929f;
+  color: white;
+}
+
+.sentence {
+  padding: 10px 10px 10px 10px;
+  margin: 3px;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.button-sentence {
+  padding: 2px;
+  margin-bottom: 2px;
+  background-color: white;
+}
+.button-sentence p {
+  padding: 2px;
+  margin: 0;
+  line-height: 14pt;
+  text-align: left;
+}
+
+.button-sentence-translation p {
+  padding: 2px;
+  margin: 0;
+  line-height: 12pt;
+  text-align: left;
+}
+.button-send-to-notes {
+  background-color: white;
+}
+.button-send-to-notes p {
+  padding: 2px;
+  color: black;
+  margin: 0;
+  line-height: 12pt;
+  text-align: left;
+}
+/*
+Deprecated code...
+
 #sentence-button-color-0 {
-  background-color: #00ffd7; /*#82b2b8;*/
+  background-color: #00ffd7;
 }
 
 #sentence-button-color-1 {
-  background-color: #a8ff00; /*#b88882;*/
+  background-color: #a8ff00;
 }
 
 #sentence-button-color-0:hover {
@@ -11,5 +121,6 @@
 }
 
 #sentence-button-color-1:hover {
-  background-color: #aaaaaa; /*#b88882;*/
+  background-color: #aaaaaa;
 }
+*/

@@ -19,6 +19,26 @@ class OcunAjax {
     return "false";
   }
 
+  public function getUserNotes() {
+    session_start();
+    if (isset($_SESSION['user'])) {
+      $db = new OcunUserDataBase($this->ocunException);
+      $qu = "SELECT `notes` FROM `user` WHERE `email` = '" . $_SESSION['user'] . "'";
+      return json_encode($db->fetch($qu));
+    }
+    return json_encode(["fail"]);
+  }
+
+  public function setUserNotes() {
+    session_start();
+    if (isset($_SESSION['user']) && isset($_POST['notes'])) {
+      $db = new OcunUserDataBase($this->ocunException);
+      $db->saveNotes($_SESSION['user'], $_POST['notes']);
+      return json_encode(["success"]);
+    }
+    return json_encode(["fail"]);
+  }
+
   public function getFunctional() {
     if (isset($_GET['id'])) {
       $db = new OcunDataBase($this->ocunException);
@@ -40,6 +60,17 @@ class OcunAjax {
       $db = new OcunDataBase($this->ocunException);
       $qu = new OcunQuery($db, $_GET['id']);
       return json_encode($qu->sentence());
+    }
+  }
+
+  public function getSentenceAndWord() {
+    if (isset($_GET['id'])) {
+      $db = new OcunDataBase($this->ocunException);
+      $qu = new OcunQuery($db, $_GET['id']);
+      return json_encode([
+        'sentences' => $qu->sentence(),
+        'words' => $qu->word()
+      ]);
     }
   }
 

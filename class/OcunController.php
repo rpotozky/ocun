@@ -108,11 +108,15 @@ class OcunController implements OcunControllerInterface {
   public function queryData() {
     if (isset($_SESSION['user'])) {
       $db = new OcunDataBase($this->ocunException);
+      $languageAndSourceList = $db->query("SELECT * FROM `language`, `source`
+        WHERE `language`.`code` = `source`.`language_code`
+        AND `source`.`shared` = 'public'")->fetchAll(PDO::FETCH_ASSOC);
       $languageList = $db->query("SELECT * FROM `language`")->fetchAll(PDO::FETCH_ASSOC);
       $sourceList = $db->query("SELECT * FROM `source`")->fetchAll(PDO::FETCH_ASSOC);
       return $this->loadTemplate("layout.php", [
         'page' => "query.php",
         'title' => "òcun - Consulta aos dados",
+        'languageAndSourceList' => $languageAndSourceList,
         'languageList' => $languageList,
         'sourceList' => $sourceList
       ]);
