@@ -17,130 +17,6 @@ function entropy(probabilities){
   return -1 * z;
 }
 
-function languageEntropy(resp){
-  var functional = JSON.parse(resp);
-  var morphemeList = {};
-  var bigramList = {};
-  var countMorphemes = 0;
-  var countBigrams = 0;
-  var unigramH = 0;
-  var bigramH = 0;
-  var sumP = 0;
-  functional.forEach((sentence) => {
-    sentence.forEach((morpheme, i) => {
-      countMorphemes++;
-      if (typeof(morphemeList[morpheme.morpheme_id]) == 'undefined'){
-        morphemeList[morpheme.morpheme_id] = {
-          form: morpheme.form,
-          meaning: morpheme.meaning,
-          count: 1};
-      } else {
-        morphemeList[morpheme.morpheme_id].count++;
-      }
-      if (i > 0){
-        countBigrams++;
-        if(typeof(bigramList[sentence[i-1].morpheme_id+'-'+morpheme.morpheme_id]) == 'undefined'){
-          bigramList[sentence[i-1].morpheme_id+'-'+morpheme.morpheme_id] = {
-            form_0: sentence[i-1].form,
-            form_1: morpheme.form,
-            meaning_0: sentence[i-1].meaning,
-            meaning_1: morpheme.meaning,
-            count: 1};
-          } else {
-            bigramList[sentence[i-1].morpheme_id+'-'+morpheme.morpheme_id].count++;
-          }
-        }
-      })
-    })
-  for (i in morphemeList){
-    morphemeList[i].probability = morphemeList[i].count / countMorphemes;
-    morphemeList[i].pLog = pLog(morphemeList[i].probability);
-    unigramH += morphemeList[i].probability * Math.log2(morphemeList[i].probability);
-    sumP += morphemeList[i].probability
-  }
-  for (i in bigramList){
-    bigramList[i].probability = bigramList[i].count / countMorphemes;
-    bigramList[i].pLog = pLog(bigramList[i].probability);
-    for(j in morphemeList){
-      if (morphemeList[j].form == bigramList[i].form_0 && morphemeList[j].meaning == bigramList[i].meaning_0){
-        bigramList[i].pA = morphemeList[j].probability;
-        bigramList[i].pLogA = morphemeList[j].pLog;
-        bigramList[i].pB_given_A = bigramList[i].probability / bigramList[i].pA;
-        bigramList[i].pLogB_given_A = bigramList[i].pLog - bigramList[i].pLogA;
-      }
-    }
-    bigramH += bigramList[i].pB_given_A * Math.log2(bigramList[i].pB_given_A);
-  }
-  console.log(morphemeList);
-  console.log(bigramList);
-  bigramH = -1 * sumP * bigramH;
-  unigramH = -1 * unigramH;
-  ul = [];
-  for (i in morphemeList){
-    ul.push(morphemeList[i]);
-  }
-  dataStream.unigramList = ul;
-  bl = [];
-  for (i in bigramList){
-    bl.push(bigramList[i]);
-  }
-  dataStream.bigramList = bl;
-  document.getElementById("lang-entropy-" + view.activeWorkspace).innerHTML = `
-  <h2>Entropia Morfológica</h2>
-  <p><b>Entropia 0-ordem:</b> ${unigramH} <button onclick="exportToCsvFile(dataStream.unigramList)">Baixar dados</button></p>
-  <p><b>Entropia 1-ordem:</b> ${bigramH} <button onclick="exportToCsvFile(dataStream.bigramList)">Baixar dados</button></p>`;
-}
-
-function parseJSONToCSVStr(jsonData) {
-    if(jsonData.length == 0) {
-        return '';
-    }
-
-    let keys = Object.keys(jsonData[0]);
-
-    let columnDelimiter = ',';
-    let lineDelimiter = '\n';
-
-    let csvColumnHeader = keys.join(columnDelimiter);
-    let csvStr = csvColumnHeader + lineDelimiter;
-
-    jsonData.forEach(item => {
-        keys.forEach((key, index) => {
-            if( (index > 0) && (index < keys.length-1) ) {
-                csvStr += columnDelimiter;
-            }
-            csvStr += item[key];
-        });
-        csvStr += lineDelimiter;
-    });
-
-    return encodeURIComponent(csvStr);;
-}
-
-function exportToCsvFile(jsonData) {
-    let csvStr = parseJSONToCSVStr(jsonData);
-    let dataUri = 'data:text/csv;charset=utf-8,'+ csvStr;
-
-    let exportFileDefaultName = 'data.csv';
-
-    let linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-}
-
-function exportToJsonFile(jsonData) {
-    let dataStr = JSON.stringify(jsonData);
-    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-
-    let exportFileDefaultName = 'data.json';
-
-    let linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-}
-
 
 function displayMorphemeStatistics(resp){
   var query = JSON.parse(view.workspace[view.workspaceBufferIndex].query);
@@ -261,3 +137,130 @@ function displayMorphemeStatistics(resp){
   view.setWorkspaceContent(str);
   document.getElementById("load-status").innerHTML = "";
 }
+
+
+
+/* Deprecated
+function languageEntropy(resp){
+  var functional = JSON.parse(resp);
+  var morphemeList = {};
+  var bigramList = {};
+  var countMorphemes = 0;
+  var countBigrams = 0;
+  var unigramH = 0;
+  var bigramH = 0;
+  var sumP = 0;
+  functional.forEach((sentence) => {
+    sentence.forEach((morpheme, i) => {
+      countMorphemes++;
+      if (typeof(morphemeList[morpheme.morpheme_id]) == 'undefined'){
+        morphemeList[morpheme.morpheme_id] = {
+          form: morpheme.form,
+          meaning: morpheme.meaning,
+          count: 1};
+      } else {
+        morphemeList[morpheme.morpheme_id].count++;
+      }
+      if (i > 0){
+        countBigrams++;
+        if(typeof(bigramList[sentence[i-1].morpheme_id+'-'+morpheme.morpheme_id]) == 'undefined'){
+          bigramList[sentence[i-1].morpheme_id+'-'+morpheme.morpheme_id] = {
+            form_0: sentence[i-1].form,
+            form_1: morpheme.form,
+            meaning_0: sentence[i-1].meaning,
+            meaning_1: morpheme.meaning,
+            count: 1};
+          } else {
+            bigramList[sentence[i-1].morpheme_id+'-'+morpheme.morpheme_id].count++;
+          }
+        }
+      })
+    })
+  for (i in morphemeList){
+    morphemeList[i].probability = morphemeList[i].count / countMorphemes;
+    morphemeList[i].pLog = pLog(morphemeList[i].probability);
+    unigramH += morphemeList[i].probability * Math.log2(morphemeList[i].probability);
+    sumP += morphemeList[i].probability
+  }
+  for (i in bigramList){
+    bigramList[i].probability = bigramList[i].count / countMorphemes;
+    bigramList[i].pLog = pLog(bigramList[i].probability);
+    for(j in morphemeList){
+      if (morphemeList[j].form == bigramList[i].form_0 && morphemeList[j].meaning == bigramList[i].meaning_0){
+        bigramList[i].pA = morphemeList[j].probability;
+        bigramList[i].pLogA = morphemeList[j].pLog;
+        bigramList[i].pB_given_A = bigramList[i].probability / bigramList[i].pA;
+        bigramList[i].pLogB_given_A = bigramList[i].pLog - bigramList[i].pLogA;
+      }
+    }
+    bigramH += bigramList[i].pB_given_A * Math.log2(bigramList[i].pB_given_A);
+  }
+  bigramH = -1 * sumP * bigramH;
+  unigramH = -1 * unigramH;
+  ul = [];
+  for (i in morphemeList){
+    ul.push(morphemeList[i]);
+  }
+  dataStream.unigramList = ul;
+  bl = [];
+  for (i in bigramList){
+    bl.push(bigramList[i]);
+  }
+  dataStream.bigramList = bl;
+  document.getElementById("lang-entropy-" + view.activeWorkspace).innerHTML = `
+  <h2>Entropia Morfológica</h2>
+  <p><b>Entropia 1-ordem:</b> ${unigramH} <button onclick="exportToCsvFile(dataStream.unigramList)">Baixar dados</button></p>
+  <p><b>Entropia 2-ordem:</b> ${bigramH} <button onclick="exportToCsvFile(dataStream.bigramList)">Baixar dados</button></p>`;
+}
+
+function parseJSONToCSVStr(jsonData) {
+    if(jsonData.length == 0) {
+        return '';
+    }
+
+    let keys = Object.keys(jsonData[0]);
+
+    let columnDelimiter = ',';
+    let lineDelimiter = '\n';
+
+    let csvColumnHeader = keys.join(columnDelimiter);
+    let csvStr = csvColumnHeader + lineDelimiter;
+
+    jsonData.forEach(item => {
+        keys.forEach((key, index) => {
+            if( (index > 0) && (index < keys.length-1) ) {
+                csvStr += columnDelimiter;
+            }
+            csvStr += item[key];
+        });
+        csvStr += lineDelimiter;
+    });
+
+    return encodeURIComponent(csvStr);;
+}
+
+function exportToCsvFile(jsonData) {
+    let csvStr = parseJSONToCSVStr(jsonData);
+    let dataUri = 'data:text/csv;charset=utf-8,'+ csvStr;
+
+    let exportFileDefaultName = 'data.csv';
+
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+function exportToJsonFile(jsonData) {
+    let dataStr = JSON.stringify(jsonData);
+    let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+
+    let exportFileDefaultName = 'data.json';
+
+    let linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+}
+
+*/

@@ -10,6 +10,7 @@
 <script type="text/javascript" src="js/view.js">//view object</script>
 <script type="text/javascript" src="js/display.js">//mostly callback functions</script>
 <script type="text/javascript" src="js/stats.js">//statistics</script>
+<script type="text/javascript" src="js/stomo.js">//statistics</script>
 <script type='text/javascript'>
 // Important variables
 var languageList = <?= json_encode($languageList) ?>;
@@ -38,17 +39,19 @@ function showLanguageInfo(code, lname){
   languageList.forEach((el) => {
     if (el.code == code) {
       str = `<h1>${el.name}</h1><p><b>Região:</b> ${el.region}</p><p><b>Falantes:</b> ${el.speakers}</p>`;
-      str += `<div id="lang-entropy-${view.activeWorkspace}"></div>`;
       str += `<h2>Fontes: </h2>`;
       sources.forEach((el) => {
-        Ajax(`ajax.php?action=getSentence&id=${el.id}`, languageEntropy);
-        str += `<div class='source-list'><p><b>Autoria:</b> ${el.author}</p>`;
+        /*Ajax(`ajax.php?action=getSentence&id=${el.id}`, languageEntropy);*/
+        str += `<div onmouseover='view.workspace[view.activeWorkspace].source=${el.id}' class='source-list'><p><b>Autoria:</b> ${el.author}</p>`;
         str += `<p><b>Título:</b> ${el.title}</p>`;
         str += `<p><em>Publicado em ${el.year} por ${el.publisher}</em></p>`;
         str += `<p> ${el.license} </p>`;
         str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getFunctional&id=${el.id}', displayFunctional])">Significados Funcionais</button>`;
         str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getRoot&id=${el.id}', displayLexical])">Raízes</button>`;
-        str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getSentence&id=${el.id}', displaySentence])">Frases</button></div>`;
+        str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getSentence&id=${el.id}', displaySentence])">Frases</button><br><br>`;
+        str += `<p><b>Análises Estatísticas (.JSON)</b></p>`;
+        str += `<p><em>Os arquivos podem demorar para serem processados</em></p>`;
+        str += `<button onclick="Ajax('ajax.php?action=getSentence&id=${el.id}>', stomo.receive)">Análise Avançada (2a Ordem)</button></div>`;
       })
     }
     view.setWorkspaceContent(str);
