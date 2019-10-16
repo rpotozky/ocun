@@ -23,7 +23,6 @@ class OcunQuery implements OcunQueryInterface {
   //que, a princípio, não parecem existir nas gramáticas.
   public function root(){
     $sql = "SELECT * FROM `pool` WHERE `source_id`=". $this->sourceID . " AND SUBSTRING_INDEX(`meaning`, '.',1)
-    NOT IN (SELECT `abbreviation` FROM `f_meaning` WHERE `source_id`=" . $this->sourceID . ") AND SUBSTRING_INDEX(`meaning`, '|',1)
     NOT IN (SELECT `abbreviation` FROM `f_meaning` WHERE `source_id`=" . $this->sourceID . ") AND `meaning`
     NOT IN (SELECT `abbreviation` FROM `f_meaning` WHERE `source_id`=" . $this->sourceID . ")";
     return $this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC);
@@ -45,7 +44,6 @@ class OcunQuery implements OcunQueryInterface {
   //Retorna a tabela com morfemas que contenham um significado em específico.
   public function allomorph($meaning){
     $sql = "SELECT * FROM `pool` WHERE `source_id`=" . $this->sourceID . " AND (`meaning`='" . $meaning . "'
-      OR `meaning` LIKE '%" . $meaning . "|%'
       OR `meaning` LIKE '%." . $meaning . "'
       OR `meaning` LIKE '" . $meaning .  ".%'
       OR `meaning` LIKE '%." . $meaning . ".%')";
@@ -97,6 +95,43 @@ class OcunQuery implements OcunQueryInterface {
     ORDER BY `phrase`.`id` ASC";
     return array_values($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC));
   }
+
+
+/* deprecated...
+  //Retorna a tabela com palavras contendo o significado solicitado
+  public function wordPattern($meaning){
+    $sql = "SELECT DISTINCT `m_chain`.`word_id` AS `word`, `m_chain`.`word_id` AS `word`, `m_chain`.`ord` AS `order`,
+    `pool`.`meaning` AS `meaning`, `pool`.`form` AS `form`
+    FROM `m_chain`, `pool`
+    WHERE `m_chain`.`morpheme_id`=`pool`.`id`
+    AND `m_chain`.`word_id` IN
+    (SELECT `m_chain`.`word_id`
+      FROM `m_chain`,`pool`
+      WHERE `m_chain`.`morpheme_id`=`pool`.`id`
+      AND `pool`.`source_id`='".  $this->sourceID . "'
+      AND `pool`.`meaning`='" . $meaning .  "')
+    ORDER BY `m_chain`.`word_id` ASC";
+    return array_values($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC));
+  }
+
+  //Retorna a tabela com palavras contendo a forma fonológica solicitada
+  public function realization($form){
+    $sql = "SELECT DISTINCT `m_chain`.`word_id` AS `word`, `m_chain`.`word_id` AS `word`, `m_chain`.`ord` AS `order`,
+    `pool`.`meaning` AS `meaning`, `pool`.`form` AS `form`
+    FROM `m_chain`, `pool`
+    WHERE `m_chain`.`morpheme_id`=`pool`.`id`
+    AND `m_chain`.`word_id` IN
+    (SELECT `m_chain`.`word_id`
+      FROM `m_chain`,`pool`
+      WHERE `m_chain`.`morpheme_id`=`pool`.`id`
+      AND `pool`.`source_id`='".  $this->sourceID . "'
+      AND `pool`.`form`='" . $form .  "')
+    ORDER BY `m_chain`.`word_id` ASC";
+    return array_values($this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC));
+  }
+  */
+
+
 }
 
 
