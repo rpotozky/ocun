@@ -8,6 +8,30 @@ class OcunAjax {
     $this->ocunException = $ocunException;
   }
 
+
+  //Template loader
+  private function loadWorkspaceTemplate($templateFileName, $variables = []){
+    extract($variables);
+    ob_start();
+    include __DIR__ . '/../template/' . $templateFileName;
+    return ob_get_clean();
+  }
+
+
+  public function displayData(){
+    if (isset($_GET['id']) && isset($_GET['function'])) {
+      $function = $_GET['function'];
+      $ocunDataBase = new OcunDataBase($this->ocunException);
+      $ocunQuery = new OcunQuery($ocunDataBase, $_GET['id']);
+      $ocunDataDisplayer = new OcunDataDisplayer($ocunQuery);
+      $displayData = $ocunDataDisplayer->$function();
+      return $this->loadWorkspaceTemplate($displayData['template'], $displayData['variables']);
+    }
+    return "false";
+  }
+
+
+
   public function checkEmailDoesNotExist() {
     if (isset($_GET['email'])) {
       $db = new OcunUserDataBase($this->ocunException);

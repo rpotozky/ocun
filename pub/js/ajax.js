@@ -13,6 +13,13 @@ function Ajax(action, resp){
   xmlhttp.send();
 }
 
+function displayAjaxDataInWorkspace(resp){
+  document.getElementById("load-status").innerHTML = "Renderizando dados...";
+  view.setWorkspaceContent(resp);
+  document.getElementById("load-status").innerHTML = "";
+  //this function is a general function to show in workspace all data coming from the server
+}
+
 function ajaxQuery(sourceId, ajax){
   view.setWorkspaceBufferIndex();
   view.setWorkspaceSource(sourceId);

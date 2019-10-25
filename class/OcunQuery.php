@@ -2,7 +2,7 @@
 class OcunQuery implements OcunQueryInterface {
 
   private $ocunDataBase;
-  private $sourceID;
+  public $sourceID;
 
   //Constrói injetando um objeto do Banco de Datos e o código da gramática fonte
   public function __construct(OcunDataBase $ocunDataBase, $sourceID) {

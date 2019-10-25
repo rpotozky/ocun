@@ -48,7 +48,8 @@ function showLanguageInfo(code, lname){
         str += `<p> ${el.license} </p>`;
         str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getFunctional&id=${el.id}', displayFunctional])">Significados Funcionais</button>`;
         str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getRoot&id=${el.id}', displayLexical])">Raízes</button>`;
-        str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getSentence&id=${el.id}', displaySentence])">Frases</button><br><br>`;
+        // str += `<button onclick="ajaxQuery(${el.id},['ajax.php?action=getSentence&id=${el.id}', displaySentence])">Frases</button><br><br>`;
+        str += `<button onclick="Ajax('ajax.php?action=displayData&id=${el.id}&function=sentence', displayAjaxDataInWorkspace)">Frases</button><br><br>`;
         str += `<p><b>Análises Estatísticas (.JSON)</b></p>`;
         str += `<p><em>Os arquivos podem demorar para serem processados</em></p>`;
         str += `<button onclick="Ajax('ajax.php?action=getSentence&id=${el.id}>', stomo.receive)">Análise Avançada (2a Ordem)</button></div>`;

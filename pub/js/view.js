@@ -1,66 +1,94 @@
 // requires ajax.js
 
 var view = {
+  // Important variables for navigating through the windows.
   objCount: 0,
   activeWorkspace: 0,
   workspaceBufferIndex: 0,
-  notes: 'digite suas anotações aqui!',
   workspace: [],
+  notes: 'digite suas anotações aqui!',
+
+
+  // Workspace Template with Menu:
+  workspaceTemplate: function() {
+      return `
+      <div class='workspace' id='workspace-${this.objCount}' onmouseover='view.setActiveWorkspace(${this.objCount})'>
+      <div class='workspace-menu'>
+      <button onclick='showLanguageInterface()'>Língua</button>
+      <button onclick='view.showNotesInterface()'>Notas</button>
+      <button onclick='view.back()'>&larr;</button>
+      <button onclick='view.resize(31)'>30%</button>
+      <button onclick='view.resize(48)'>50%</button>
+      <button onclick='view.resize(65)'>70%</button>
+      <button onclick='view.resize(100)'>100%</button>
+      <button onclick='view.duplicateWorkspace()'>Duplicar</button>
+      <button onclick='view.showWorkspaceHelp()'>?</button>
+      <button onclick='view.closeWorkspace()'>&times;</button>
+      </div>
+      <div id='workspace-${this.objCount}-content' class='workspace-content'></div>
+      </div>`;},
+
+
+  // Default Workspace Data:
+  defaultWorkspace: function() {
+    return {
+      index: this.objCount,
+      width: 100,
+      content: `
+        <h1>Olá! Sou uma nova área de trabalho!</h1>
+        <p>Para começar a navegar pelos dados de òcun, clique em <button onclick='showLanguageInterface()'>Língua</button> no menu acima para escolher uma língua e uma fonte.</p>
+        <p>Para tomar notas, clique em <button onclick='view.showNotesInterface()'>Notas</button> no menu</p>
+        <p>Se precisar de mais ajuda, clique em <button onclick='view.showWorkspaceHelp()'>?</button></p>
+        <h2>Divirta-se!</h2>`,
+      back: '',
+      language: '',
+      query: '',
+      source: 0
+    };
+  },
+
+
+  //Create a new Workspace:
   addWorkspace: function(workspace = "default") {
-    document.getElementById("load-status").innerHTML = "carregando...";
-    workspaceTemplate = "<div class='workspace' id='workspace-" + this.objCount + "' onmouseover='view.setActiveWorkspace(" + this.objCount + ")'>" +
-        "<div class='workspace-menu'>" +
-        "<button onclick='showLanguageInterface()'>Língua</button> " +
-        "<button onclick='view.showNotesInterface()'>Notas</button> " +
-        "<button onclick='view.back()'>&larr;</button> " +
-        "<button onclick='view.resize(31)'>30%</button> " +
-        "<button onclick='view.resize(48)'>50%</button> " +
-        "<button onclick='view.resize(65)'>70%</button> " +
-        "<button onclick='view.resize(100)'>100%</button> " +
-        "<button onclick='view.toNewWorkspace()'>Duplicar</button> " +
-        "<button onclick='view.showWorkspaceHelp()'>?</button> " +
-        "<button onclick='view.closeWorkspace()'>&times;</button>" +
-        "</div>" +
-        "<div id='workspace-" + this.objCount + "-content' class='workspace-content'></div>" +
-        "</div>";
-    openingContent = "<h1>Olá! Sou uma nova área de trabalho!</h1>" +
-        "<p>Para começar a navegar pelos dados de òcun, clique em <button>Língua</button> no menu acima para escolher uma língua e uma fonte.</p>" +
-        "<p>Para tomar notas, clique em <button>Notas</button> no menu." +
-        "<p>Se precisar de mais ajuda, clique em <button>?</button>."
-        "<h2>Divirta-se!</h2>";
+    //Set status bar to loading
+    document.getElementById(`load-status`).innerHTML = "carregando...";
+
     if (workspace == "default") {
-      this.workspace.push({
-        index: this.objCount,
-        width: 100,
-        content: openingContent,
-        back: '',
-        language: '',
-        query: '',
-        source: 0
-      });
+      this.workspace.push(this.defaultWorkspace());
     } else {
       newWorkspace = JSON.parse(workspace);
       newWorkspace.index = this.objCount;
       this.workspace.push(newWorkspace);
-      console.log(this.workspace);
-
     }
 
-    document.getElementById("query-workspace").innerHTML += workspaceTemplate;
+    //Render initial content
+    document.getElementById(`query-workspace`).innerHTML += this.workspaceTemplate();
     document.getElementById(`workspace-${this.objCount}-content`).innerHTML = this.workspace[this.objCount].content;
+
+    //Increment object count
     this.objCount++;
+
+    //Clear status bar
     document.getElementById("load-status").innerHTML = "";
   },
+
+
+  //Close a Workspace
   closeWorkspace: function() {
     var elem = document.querySelector('#workspace-' + this.activeWorkspace);
     elem.parentNode.removeChild(elem);
     delete view.workspace[this.activeWorkspace];
   },
-  toNewWorkspace: function(){
+
+  //Duplicate a Workspace
+  duplicateWorkspace: function(){
     document.getElementById("load-status").innerHTML = "carregando...";
     this.addWorkspace(JSON.stringify(this.workspace[this.activeWorkspace]));
     document.getElementById("load-status").innerHTML = "";
   },
+
+
+
   setWorkspaceBufferIndex: function(){
     this.workspaceBufferIndex = this.activeWorkspace;
   },
