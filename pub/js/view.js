@@ -10,7 +10,7 @@ var view = {
     document.getElementById("load-status").innerHTML = "carregando...";
     workspaceTemplate = "<div class='workspace' id='workspace-" + this.objCount + "' onmouseover='view.setActiveWorkspace(" + this.objCount + ")'>" +
         "<div class='workspace-menu'>" +
-        "<button onclick='showLanguageInterface()'>Língua</button>" +
+        "<button onclick='showLanguageInterface()'>Língua</button> " +
         "<button onclick='view.showNotesInterface()'>Notas</button> " +
         "<button onclick='view.back()'>&larr;</button> " +
         "<button onclick='view.resize(31)'>30%</button> " +
