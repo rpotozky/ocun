@@ -17,19 +17,19 @@ function ajaxQuery(sourceId, ajax){
   view.setWorkspaceBufferIndex();
   view.setWorkspaceSource(sourceId);
   Ajax(ajax[0], ajax[1]);
-  document.getElementById("load-status").innerHTML = "carregando..."
+  document.getElementById("load-status").innerHTML = "carregando...";
 }
 
 function getAllomorph(meaning, explanation = null){
   view.setWorkspaceBufferIndex();
   Ajax("ajax.php?action=getAllomorph&id=" + view.workspace[view.workspaceBufferIndex].source + "&meaning=" + meaning, displayAllomorph);
-  document.getElementById("load-status").innerHTML = "carregando..."
+  document.getElementById("load-status").innerHTML = "carregando...";
   view.setWorkspaceQuery((explanation != null) ? explanation : meaning);
 }
 
 function getMorphemeStatistics(form, meaning){
   view.setWorkspaceBufferIndex();
   Ajax("ajax.php?action=getSentenceAndWord&id=" + view.workspace[view.workspaceBufferIndex].source, displayMorphemeStatistics);
-  document.getElementById("load-status").innerHTML = "carregando..."
+  document.getElementById("load-status").innerHTML = "carregando...";
   view.setWorkspaceQuery(JSON.stringify({form: form, meaning: meaning}));
 }

@@ -31,7 +31,7 @@ class OcunQuery implements OcunQueryInterface {
 
   //Retorna a lista de sentenças da gramática, com os códigos das palavras e morfemas.
   public function sentence(){
-    $sql = "SELECT DISTINCT `w_chain`.`phrase_id` AS `id`, `w_chain`.`phrase_id` AS `phrase_id`, `phrase`.`translation` AS `translation`,
+    $sql = "SELECT `w_chain`.`phrase_id` AS `id`, `w_chain`.`phrase_id` AS `phrase_id`, `phrase`.`translation` AS `translation`,
     `w_chain`.`word_id` AS `word_id`, `m_chain`.`morpheme_id` AS `morpheme_id`, `pool`.`form` AS `form`,
     `pool`.`meaning` AS `meaning`, `phrase`.`source_id` AS `source_id` FROM `phrase`, `w_chain`, `m_chain`, `pool`
     WHERE `phrase`.`source_id` = '" . $this->sourceID . "'

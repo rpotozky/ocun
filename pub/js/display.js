@@ -71,9 +71,9 @@ function sentenceBuild(sentenceBase){
     str += `<br><button class="button-sentence-translation"><p>"${sentence[0].translation}"</p></button>`;
     sentenceData = `<br><b> ${view.workspace[view.workspaceBufferIndex].language}: </b><br> ${sentenceTextOriginal} <br> ${sentenceTextGloss} <br> ${sentence[0].translation} <br>`;
     allSentenceData += sentenceData;
-    str += `<button class="button-send-to-notes" onclick="view.addToNotes('${sentenceData}')"><p>Notas</p></button></div>`;
+    str += `<button class="button-send-to-notes" onclick="view.addToNotes(\`${sentenceData}\`)"><p>Notas</p></button></div>`;
   });
-  str += `<p><button onclick='view.addToNotes("${allSentenceData}")'>Enviar todas as frases para Notas</button>`;
+  str += `<p><button onclick='view.addToNotes(\`${allSentenceData}\`)'>Enviar todas as frases para Notas</button>`;
   str += `</div>`;
   return str;
 }
