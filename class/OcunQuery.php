@@ -10,6 +10,13 @@ class OcunQuery implements OcunQueryInterface {
     $this->sourceID = $sourceID;
   }
 
+  public function language(){
+    $sql = "SELECT `language`.`name`
+    FROM `source`, `language` WHERE `source`.`id` = " . $this->sourceID . " AND
+    `language`.`code` = `source`.`language_code`";
+    return $this->ocunDataBase->query($sql)->fetch(PDO::FETCH_ASSOC);
+
+  }
   //Pega lista de significados funcionais e abreviações da gramática fonte.
   //Retorna objeto JSON com os dados.
   public function functional(){
@@ -54,7 +61,7 @@ class OcunQuery implements OcunQueryInterface {
 
   //Retorna a tabela com morfemas que contenham uma forma em epecífico.
   public function homonym($form){
-    $sql = "SELECT * FROM `pool` WHERE `source_id`=" . $this->sourceID . " AND `form`='" . $functionalMeaning . "'";
+    $sql = "SELECT * FROM `pool` WHERE `source_id`=" . $this->sourceID . " AND `form`='" . $form . "'";
     return $this->ocunDataBase->query($sql)->fetchAll(PDO::FETCH_ASSOC);
   }
 
@@ -85,7 +92,7 @@ class OcunQuery implements OcunQueryInterface {
 
   //frase por morfema (forma, significado)
   public function morphemeInSentence($form, $meaning){
-    $sql = "SELECT DISTINCT `w_chain`.`phrase_id` AS `id`, `phrase`.`translation` AS `translation`,
+    $sql = "SELECT `w_chain`.`phrase_id` AS `id`, `phrase`.`translation` AS `translation`,
     `w_chain`.`word_id` AS `word_id`, `m_chain`.`morpheme_id` AS `morpheme_id`, `pool`.`form` AS `form`,
     `pool`.`meaning` AS `meaning`, `phrase`.`source_id` AS `source_id` FROM `phrase`, `w_chain`, `m_chain`, `pool`
     WHERE `phrase`.`source_id` = '" . $this->sourceID . "'

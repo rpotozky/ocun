@@ -74,7 +74,7 @@
   padding: 10px 10px 10px 10px;
   margin: 3px;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: #7eadba;
 }
 
 .button-sentence {
@@ -89,18 +89,23 @@
   text-align: left;
 }
 
-.button-sentence-translation p {
-  padding: 2px;
-  margin: 0;
+.sentence-translation {
+  padding: 10px;
+  margin-bottom: 2px;
   line-height: 12pt;
   text-align: left;
+  background-color: white;
+  border-radius: 5px;
+  border-color: black;
+  border-width: thin;
+  border-style: solid;
 }
 .button-send-to-notes {
-  background-color: white;
+  background-color: #333333;
 }
 .button-send-to-notes p {
   padding: 2px;
-  color: black;
+  color: white;
   margin: 0;
   line-height: 12pt;
   text-align: left;

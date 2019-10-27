@@ -148,10 +148,12 @@ var view = {
   loadNotes: function() {
     Ajax("ajax.php?action=getUserNotes", display);
     function display(resp, k){
+      document.getElementById("load-status").innerHTML = "carregando notas...";
       console.log();
       if (JSON.parse(resp).notes != null) {
         view.notes = JSON.parse(resp).notes;
       }
+      document.getElementById("load-status").innerHTML = "";
     }
   }(),
   saveNotes: function() {

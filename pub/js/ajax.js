@@ -3,6 +3,7 @@
 //requires display.js
 
 function Ajax(action, resp){
+  document.getElementById("load-status").innerHTML = "buscando dados no servidor...";
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -14,6 +15,7 @@ function Ajax(action, resp){
 }
 
 function displayAjaxDataInWorkspace(resp){
+  view.setWorkspaceBufferIndex();
   document.getElementById("load-status").innerHTML = "Renderizando dados...";
   view.setWorkspaceContent(resp);
   document.getElementById("load-status").innerHTML = "";
