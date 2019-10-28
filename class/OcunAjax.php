@@ -4,6 +4,8 @@ class OcunAjax implements OcunAjaxInterface{
 
   private $ocunException;
 
+  private $sourceRestriction = "";
+
   public function __construct(OcunException $ocunException) {
     $this->ocunException = $ocunException;
   }
@@ -17,17 +19,53 @@ class OcunAjax implements OcunAjaxInterface{
     return ob_get_clean();
   }
 
+  //Lista as línguas. Por enquanto, apenas línguas públicas e do grupo são listadas...
   public function languageList(){
     $ocunDataBase = new OcunDataBase($this->ocunException);
-    $languageList = $ocunDataBase->query("SELECT * FROM `language` ORDER BY `language`.`name`")->fetchAll(PDO::FETCH_ASSOC);
+    session_start();
+
+    // SQL para selecionar línguas considerando restrições de grupo
+    $languageList = $_SESSION['user'] == 'root@ocun.latip.com.br' ? $ocunDataBase->query("SELECT *
+    FROM `language`
+    ORDER BY `language`.`name`") : $ocunDataBase->query("SELECT *
+      FROM `language`
+      WHERE `language`.`code`
+      IN (
+        SELECT `language_code`
+        FROM `source`
+        WHERE `source`.`shared` = 'public' OR
+        `source`.`team` IN (
+          SELECT `latip_user`.`team`.`id`
+          FROM `latip_user`.`user`, `latip_user`.`team`, `latip_user`.`team_membership`
+          WHERE `latip_user`.`user`.`email` = '".$_SESSION['user']."' AND
+          `latip_user`.`user`.`id` = `latip_user`.`team_membership`.`user_id` AND
+          `latip_user`.`team`.`id` = `latip_user`.`team_membership`.`team_id`))
+      ORDER BY `language`.`name`")->fetchAll(PDO::FETCH_ASSOC);
+
+
     return $this->loadWorkspaceTemplate('workspace_language_list.php', ['language_list' => $languageList]);
   }
 
   public function languageInfo(){
     if (isset($_GET['code'])){
+      session_start();
       $ocunDataBase = new OcunDataBase($this->ocunException);
       $language = $ocunDataBase->query("SELECT * FROM `language` WHERE `language`.`code` = '".$_GET['code']."'")->fetch(PDO::FETCH_ASSOC);
-      $sourceList = $ocunDataBase->query("SELECT * FROM `source` WHERE `source`.`language_code`= '".$_GET['code']."'")->fetchAll(PDO::FETCH_ASSOC);
+
+      // SQL para selecionar fontes considerando restrições de grupo
+      $sourceList = $_SESSION['user'] == 'root@ocun.latip.com.br' ? $ocunDataBase->query("SELECT *
+      FROM `source` WHERE `source`.`language_code` = '".$_GET['code']."'") : $ocunDataBase->query("SELECT *
+        FROM `source`
+        WHERE `source`.`language_code`= '".$_GET['code']."' AND
+        `source`.`shared` = 'public' OR
+        `source`.`team` IN (
+          SELECT `latip_user`.`team`.`id`
+          FROM `latip_user`.`user`, `latip_user`.`team`, `latip_user`.`team_membership`
+          WHERE `latip_user`.`user`.`email` = '".$_SESSION['user']."' AND
+          `latip_user`.`user`.`id` = `latip_user`.`team_membership`.`user_id` AND
+          `latip_user`.`team`.`id` = `latip_user`.`team_membership`.`team_id`)")->fetchAll(PDO::FETCH_ASSOC);
+
+
       return $this->loadWorkspaceTemplate('workspace_language_info.php', ['language' => $language, 'sources' => $sourceList]);
     }
     return $this->loadWorkspaceTemplate('workspace_error.php', []);

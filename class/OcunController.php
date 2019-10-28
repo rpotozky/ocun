@@ -83,7 +83,7 @@ class OcunController implements OcunControllerInterface {
     if (isset($_SESSION['user'])) {
       return $this->loadTemplate("layout.php",[
         'page' => "home.php",
-        'title' => "òcun - Bem-vindo à área do usuário"
+        'title' => "òcun - " . $_SESSION['user']
       ]);
     }
     else {
