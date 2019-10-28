@@ -77,6 +77,15 @@
   background-color: #7eadba;
 }
 
+.source-and-language {
+  padding: 10px 10px 10px 10px;
+  margin: 3px;
+  border-radius: 5px;
+  background-color: #AABBCC;
+}
+
+
+
 .button-sentence {
   padding: 2px;
   margin-bottom: 2px;

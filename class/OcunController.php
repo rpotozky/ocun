@@ -29,7 +29,11 @@ class OcunController implements OcunControllerInterface {
       if (isset($_GET['msg']) && $_GET['msg'] == 'authErr') {
         $authStatus = 'Falha de autenticação. Verifique usuário e senha...';
       }
-      return $this->loadTemplate("welcome.php", ['authStatus' => $authStatus]);
+      return $this->loadTemplate("layout.php", [
+        'page' => 'welcome.php',
+        'title' => 'Bem-vindo à plataforma Òcun!',
+        'authStatus' => $authStatus
+      ]);
     }
   }
 
@@ -54,7 +58,10 @@ class OcunController implements OcunControllerInterface {
 
   //User registration page
   public function signUp() {
-    return $this->loadTemplate("register.php");
+    return $this->loadTemplate("layout.php", [
+      'page' => 'register.php',
+      'title' => 'Registro'
+    ]);
   }
 
   //User registration action
@@ -104,27 +111,6 @@ class OcunController implements OcunControllerInterface {
     }
   }
 
-  //Loads app for querying linguistic data
-  public function queryData() {
-    if (isset($_SESSION['user'])) {
-      $db = new OcunDataBase($this->ocunException);
-      $languageAndSourceList = $db->query("SELECT * FROM `language`, `source`
-        WHERE `language`.`code` = `source`.`language_code`
-        AND `source`.`shared` = 'public'")->fetchAll(PDO::FETCH_ASSOC);
-      $languageList = $db->query("SELECT * FROM `language`")->fetchAll(PDO::FETCH_ASSOC);
-      $sourceList = $db->query("SELECT * FROM `source`")->fetchAll(PDO::FETCH_ASSOC);
-      return $this->loadTemplate("layout.php", [
-        'page' => "query.php",
-        'title' => "òcun - Consulta aos dados",
-        'languageAndSourceList' => $languageAndSourceList,
-        'languageList' => $languageList,
-        'sourceList' => $sourceList
-      ]);
-    }
-    else {
-      header('Location: index.php');
-    }
-  }
 
 }
 

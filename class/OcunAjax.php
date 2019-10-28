@@ -1,6 +1,6 @@
 <?php
 
-class OcunAjax {
+class OcunAjax implements OcunAjaxInterface{
 
   private $ocunException;
 
@@ -17,6 +17,21 @@ class OcunAjax {
     return ob_get_clean();
   }
 
+  public function languageList(){
+    $ocunDataBase = new OcunDataBase($this->ocunException);
+    $languageList = $ocunDataBase->query("SELECT * FROM `language` ORDER BY `language`.`name`")->fetchAll(PDO::FETCH_ASSOC);
+    return $this->loadWorkspaceTemplate('workspace_language_list.php', ['language_list' => $languageList]);
+  }
+
+  public function languageInfo(){
+    if (isset($_GET['code'])){
+      $ocunDataBase = new OcunDataBase($this->ocunException);
+      $language = $ocunDataBase->query("SELECT * FROM `language` WHERE `language`.`code` = '".$_GET['code']."'")->fetch(PDO::FETCH_ASSOC);
+      $sourceList = $ocunDataBase->query("SELECT * FROM `source` WHERE `source`.`language_code`= '".$_GET['code']."'")->fetchAll(PDO::FETCH_ASSOC);
+      return $this->loadWorkspaceTemplate('workspace_language_info.php', ['language' => $language, 'sources' => $sourceList]);
+    }
+    return $this->loadWorkspaceTemplate('workspace_error.php', []);
+  }
 
   public function displayData(){
     if (isset($_GET['id']) && isset($_GET['function'])) {
@@ -27,7 +42,7 @@ class OcunAjax {
       $displayData = $ocunDataDisplayer->$function();
       return $this->loadWorkspaceTemplate($displayData['template'], $displayData['variables']);
     }
-    return "false";
+    return $this->loadWorkspaceTemplate('workspace_error.php', []);
   }
 
 
@@ -63,6 +78,7 @@ class OcunAjax {
     return json_encode(["fail"]);
   }
 
+/*
   public function getFunctional() {
     if (isset($_GET['id'])) {
       $db = new OcunDataBase($this->ocunException);
@@ -114,6 +130,7 @@ class OcunAjax {
     }
   }
 
+*/
 
 }
 

@@ -2,17 +2,41 @@
   <div style="display: inline-block; background-color: #7eadba; border-radius: 10px; padding: 10px; ">
     <h1 style="text-align: center;"><?=$form?></h1>
     <h1 style="text-align: center;"><?=$meaning?></h1>
-  </div> Morfema do <?=$language?></h1>
+  </div> Morfema do <?=$language?>
+</h1>
 
-  <div style="display: block; margin: 20px; background-color: #AABBCC; border-radius: 10px; padding: 10px; ">
-    <p><b>Dados morfológicos do <?=$language?></b></p>
-    <p>Número de morfemas no corpus: <b><?=$stats['morpheme_count']?></b> <br> Média de morfemas por frase: <b><?=$stats['morpheme_count']/$sentence_count?></b></p>
-  </div>
+
+<div style="display: block; margin: 20px; background-color: #AABBCC; border-radius: 10px; padding: 10px; ">
+  <p><b>Dados morfológicos do <?=$language?></b></p>
+  <p>Número de morfemas no corpus: <b><?=$stats['morpheme_count']?></b>
+    <br> Média de morfemas por frase: <b><?=$stats['morpheme_count']/$sentence_count?></b>
+    <br> Morfemas distintos por tamanho do corpus (<?=count($stats['morpheme_list'])."/".$stats['morpheme_count']?>): <b><?=count($stats['morpheme_list'])/$stats['morpheme_count']?></b></p>
+</div>
+
+<?php if(count($functional_meaning) > 0): ?>
+  <table>
+    <caption><b>Significados Funcionais</b></caption>
+    <tr>
+      <th><b>Abreviação</b></th>
+      <th><b>Significado</b></th>
+    </tr>
+    <?php foreach($functional_meaning as $abbvr): ?>
+      <tr>
+        <td><?=$abbvr['abbreviation']?></td>
+        <td><?=$abbvr['meaning']?></td>
+      </tr>
+    <?php endforeach;?>
+  </table>
+  <br>
+<?php endif;?>
+
+
+
 
 <table>
   <caption><b>Dados Probabilísticos do Morfema</b></caption>
   <tr>
-    <th></th><th>Contagem</th><th>P</th><th>-logP</th>
+    <th></th><th><b>Contagem</b></th><th><b>P</b></th><th><b>-logP</b></th>
   </tr>
   <tr>
     <td>Morfema</th><th><?=$stats['morpheme_match']?></th><th><?=$stats['morpheme_probability']?></th><th><?=$stats['morpheme_logP']?></th>

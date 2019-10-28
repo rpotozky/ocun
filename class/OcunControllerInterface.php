@@ -10,7 +10,6 @@ interface OcunControllerInterface {
   public function registerUser();
   public function manageSource();
   public function insertData();
-  public function queryData();
 
 }
 

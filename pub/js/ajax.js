@@ -1,7 +1,3 @@
-//requires view.js
-//requires stats.js
-//requires display.js
-
 function Ajax(action, resp){
   document.getElementById("load-status").innerHTML = "buscando dados no servidor...";
   var xmlhttp = new XMLHttpRequest();
@@ -19,8 +15,9 @@ function displayAjaxDataInWorkspace(resp){
   document.getElementById("load-status").innerHTML = "Renderizando dados...";
   view.setWorkspaceContent(resp);
   document.getElementById("load-status").innerHTML = "";
-  //this function is a general function to show in workspace all data coming from the server
 }
+
+/* DEPRECATED CODE
 
 function ajaxQuery(sourceId, ajax){
   view.setWorkspaceBufferIndex();
@@ -41,4 +38,4 @@ function getMorphemeStatistics(form, meaning){
   Ajax("ajax.php?action=getSentenceAndWord&id=" + view.workspace[view.workspaceBufferIndex].source, displayMorphemeStatistics);
   document.getElementById("load-status").innerHTML = "carregando...";
   view.setWorkspaceQuery(JSON.stringify({form: form, meaning: meaning}));
-}
+} */

@@ -43,6 +43,7 @@ class OcunDataDisplayer {
 
   private function morphemeStats($form, $meaning){
     $sentenceArray = $this->ocunQuery->sentence();
+    $morphemeList = $this->ocunQuery->morphemes();
     $sentencesWithMorpheme = [];
     $morphemesInSource = 0;
     $morphemeMatch = 0;
@@ -75,6 +76,7 @@ class OcunDataDisplayer {
       'morpheme_count' => $morphemesInSource,
       'morpheme_probability' => $morphemeProbability,
       'morpheme_logP' => $morphemeLogP,
+      'morpheme_list' => $morphemeList,
       'form_probability' => $formProbability,
       'form_logP' => $formLogP,
       'meaning_probability' => $meaningProbability,
@@ -114,6 +116,7 @@ class OcunDataDisplayer {
     $homonyms = $this->ocunQuery->homonym($form);
     $stats = $this->morphemeStats($form, $meaning);
     $sentenceBlocks = $this->buildSentence($stats['sentences']);
+    $functionalMeaning = $this->ocunQuery->functionalMeaning($meaning);
     return [
         'template' => 'workspace_morpheme.php',
         'variables' => [
@@ -125,10 +128,36 @@ class OcunDataDisplayer {
           'allomorphs' => $allomorphs,
           'homonyms' => $homonyms,
           'source_id' => $this->ocunQuery->sourceID,
-          'sentence_count' => count($this->ocunQuery->sentence())
+          'sentence_count' => count($this->ocunQuery->sentence()),
+          'functional_meaning' => $functionalMeaning
         ]
       ];
-    // equivalent to morpheme statistics.
+  }
+
+  public function functional(){
+    $language = $this->ocunQuery->language();
+    $functional = $this->ocunQuery->functional();
+    return [
+      'template' => 'workspace_functional.php',
+      'variables' => [
+        'language' => $language['name'],
+        'functional' => $functional,
+        'source_id' => $this->ocunQuery->sourceID
+      ]
+    ];
+  }
+
+  public function lexicon(){
+    $language = $this->ocunQuery->language();
+    $morphemes = $this->ocunQuery->morphemes();
+    return [
+      'template' => 'workspace_lexicon.php',
+      'variables' => [
+        'language' => $language,
+        'morphemes' => $morphemes,
+        'source_id' => $this->ocunQuery->sourceID
+      ]
+    ];
   }
 
 
