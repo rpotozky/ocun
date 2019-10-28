@@ -96,7 +96,7 @@ var view = {
     view.workspace[this.workspaceBufferIndex].back = this.getActiveWorkspaceContent();
     this.workspace[this.workspaceBufferIndex].content = content;
     document.getElementById("workspace-" + this.workspaceBufferIndex + "-content").innerHTML = content;
-    document.getElementById("workspace-" + this.workspaceBufferIndex).scrollTop = 0; 
+    document.getElementById("workspace-" + this.workspaceBufferIndex).scrollTop = 0;
   },
   setWorkspaceLanguage: function(language){
     view.workspace[this.activeWorkspace].language = language;
@@ -130,7 +130,7 @@ var view = {
     view.workspace[view.activeWorkspace].back = view.getActiveWorkspaceContent();
     view.setActiveWorkspaceContent(`<button onclick="view.setActiveWorkspaceContent(view.workspace[view.activeWorkspace].back)">Voltar</button>
     <button onclick="view.saveNotes()">Salvar</button>
-    <div class='workspace-notes' contenteditable='true'>${view.notes}</div>`);
+    <pre class='workspace-notes' contenteditable='true'>${view.notes}</pre>`);
 
     var content = document.querySelector('[contenteditable]');
 
@@ -142,7 +142,7 @@ var view = {
   addToNotes: function(str) {
     this.notes +=  str;
     document.querySelectorAll('[contenteditable]').forEach((el) => {
-      el.innerHTML = this.notes;
+      el.textContent = this.notes;
     });
     this.saveNotes();
   },
