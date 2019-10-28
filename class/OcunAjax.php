@@ -57,13 +57,13 @@ class OcunAjax implements OcunAjaxInterface{
       FROM `source` WHERE `source`.`language_code` = '".$_GET['code']."'") : $ocunDataBase->query("SELECT *
         FROM `source`
         WHERE `source`.`language_code`= '".$_GET['code']."' AND
-        `source`.`shared` = 'public' OR
+        (`source`.`shared` = 'public' OR
         `source`.`team` IN (
           SELECT `latip_user`.`team`.`id`
           FROM `latip_user`.`user`, `latip_user`.`team`, `latip_user`.`team_membership`
           WHERE `latip_user`.`user`.`email` = '".$_SESSION['user']."' AND
           `latip_user`.`user`.`id` = `latip_user`.`team_membership`.`user_id` AND
-          `latip_user`.`team`.`id` = `latip_user`.`team_membership`.`team_id`)")->fetchAll(PDO::FETCH_ASSOC);
+          `latip_user`.`team`.`id` = `latip_user`.`team_membership`.`team_id`))")->fetchAll(PDO::FETCH_ASSOC);
 
 
       return $this->loadWorkspaceTemplate('workspace_language_info.php', ['language' => $language, 'sources' => $sourceList]);
