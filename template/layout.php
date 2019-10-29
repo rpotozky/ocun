@@ -17,7 +17,9 @@
       <img src="svg/logo.svg">
       <a href="index.php">òcun</a>
       <div class='topnav-right'>
-      <a href="logout.php">Sair</a>
+        <?php if(isset($_SESSION['user'])): ?>
+          <a href="logout.php">Sair</a>
+        <?php endif; ?>
     </div>
   </div>
   </header>
@@ -27,7 +29,7 @@
 
  </div>
  <footer>
-   <p>Ocun v0.2.0</p>
+   <p>Ocun v0.2.Alpha</p>
  </footer>
 </body>
 </html>

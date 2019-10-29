@@ -1,8 +1,5 @@
-//requires view.js
-//requires stats.js
-//requires display.js
-
 function Ajax(action, resp){
+  document.getElementById("load-status").innerHTML = "buscando dados no servidor...";
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -13,23 +10,22 @@ function Ajax(action, resp){
   xmlhttp.send();
 }
 
-function ajaxQuery(sourceId, ajax){
+function displayAjaxDataInWorkspace(resp){
   view.setWorkspaceBufferIndex();
-  view.setWorkspaceSource(sourceId);
-  Ajax(ajax[0], ajax[1]);
-  document.getElementById("load-status").innerHTML = "carregando...";
+  document.getElementById("load-status").innerHTML = "Renderizando dados...";
+  view.setWorkspaceContent(resp);
+  document.getElementById("load-status").innerHTML = "";
 }
 
-function getAllomorph(meaning, explanation = null){
-  view.setWorkspaceBufferIndex();
-  Ajax("ajax.php?action=getAllomorph&id=" + view.workspace[view.workspaceBufferIndex].source + "&meaning=" + meaning, displayAllomorph);
-  document.getElementById("load-status").innerHTML = "carregando...";
-  view.setWorkspaceQuery((explanation != null) ? explanation : meaning);
-}
-
-function getMorphemeStatistics(form, meaning){
-  view.setWorkspaceBufferIndex();
-  Ajax("ajax.php?action=getSentenceAndWord&id=" + view.workspace[view.workspaceBufferIndex].source, displayMorphemeStatistics);
-  document.getElementById("load-status").innerHTML = "carregando...";
-  view.setWorkspaceQuery(JSON.stringify({form: form, meaning: meaning}));
+function getJSON(resp){
+  document.getElementById("load-status").innerHTML = "Renderizando dados...";
+  console.log(JSON.parse(resp));
+  let dataStr = JSON.stringify(JSON.parse(resp));
+  let dataUri = URL.createObjectURL(new Blob([dataStr],{type:"text/plain"}));
+  let exportFileDefaultName = 'sentences.json';
+  let linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+  document.getElementById("load-status").innerHTML = "";
 }
