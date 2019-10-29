@@ -14,7 +14,7 @@ var view = {
       return `
       <div class='workspace' id='workspace-${this.objCount}' onmouseover='view.setActiveWorkspace(${this.objCount})'>
       <div class='workspace-menu'>
-      <button onclick='Ajax("ajax.php?action=languageList", displayAjaxDataInWorkspace, false)'>Língua</button>
+      <button onclick='Ajax("ajax.php?action=languageList", displayAjaxDataInWorkspace)'>Língua</button>
       <button onclick='view.showNotesInterface()'>Notas</button>
       <button onclick='view.back()'>&larr;</button>
       <button onclick='view.resize(31)'>30%</button>
