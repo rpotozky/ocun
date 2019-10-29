@@ -36,7 +36,8 @@ var view = {
       width: 100,
       content: `
         <h1>Olá! Sou uma nova área de trabalho!</h1>
-        <p>Para começar a navegar pelos dados de òcun, clique em <button onclick='showLanguageInterface()'>Língua</button> no menu acima para escolher uma língua e uma fonte.</p>
+        <p>Para começar a navegar pelos dados de òcun, clique em <button onclick='Ajax("ajax.php?action=languageList", displayAjaxDataInWorkspace)'>Língua</button>
+ no menu acima para escolher uma língua e uma fonte.</p>
         <p>Para tomar notas, clique em <button onclick='view.showNotesInterface()'>Notas</button> no menu</p>
         <p>Se precisar de mais ajuda, clique em <button onclick='view.showWorkspaceHelp()'>?</button></p>
         <h2>Divirta-se!</h2>`,
