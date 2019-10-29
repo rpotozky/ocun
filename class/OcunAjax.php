@@ -84,6 +84,17 @@ class OcunAjax implements OcunAjaxInterface{
   }
 
 
+  public function getData(){
+    if (isset($_GET['id']) && isset($_GET['function'])) {
+      $function = $_GET['function'];
+      $ocunDataBase = new OcunDataBase($this->ocunException);
+      $ocunQuery = new OcunQuery($ocunDataBase, $_GET['id']);
+      $ocunStatistics = new OcunStatistics($ocunQuery);
+      return $ocunStatistics->$function();
+    }
+    return "false";
+  }
+
 
   public function checkEmailDoesNotExist() {
     if (isset($_GET['email'])) {
@@ -115,60 +126,6 @@ class OcunAjax implements OcunAjaxInterface{
     }
     return json_encode(["fail"]);
   }
-
-/*
-  public function getFunctional() {
-    if (isset($_GET['id'])) {
-      $db = new OcunDataBase($this->ocunException);
-      $qu = new OcunQuery($db, $_GET['id']);
-      return json_encode($qu->functional());
-    }
-  }
-
-  public function getRoot() {
-    if (isset($_GET['id'])) {
-      $db = new OcunDataBase($this->ocunException);
-      $qu = new OcunQuery($db, $_GET['id']);
-      return json_encode($qu->root());
-    }
-  }
-
-  public function getSentence() {
-    if (isset($_GET['id'])) {
-      $db = new OcunDataBase($this->ocunException);
-      $qu = new OcunQuery($db, $_GET['id']);
-      return json_encode($qu->sentence());
-    }
-  }
-
-  public function getSentenceAndWord() {
-    if (isset($_GET['id'])) {
-      $db = new OcunDataBase($this->ocunException);
-      $qu = new OcunQuery($db, $_GET['id']);
-      return json_encode([
-        'sentences' => $qu->sentence(),
-        'words' => $qu->word()
-      ]);
-    }
-  }
-
-  public function getAllFixedData() {
-    if (isset($_GET['id'])) {
-      $db = new OcunDataBase($this->ocunException);
-      $qu = new OcunQuery($db, $_GET['id']);
-      return json_encode([$qu->functional(), $qu->root(), $qu->sentence()]);
-    }
-  }
-
-  public function getAllomorph() {
-    if (isset($_GET['meaning']) && isset($_GET['id'])) {
-      $db = new OcunDataBase($this->ocunException);
-      $qu = new OcunQuery($db, $_GET['id']);
-      return json_encode($qu->allomorph($_GET['meaning']));
-    }
-  }
-
-*/
 
 }
 

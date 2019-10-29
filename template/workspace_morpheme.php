@@ -36,7 +36,7 @@
 <table>
   <caption><b>Dados Probabilísticos do Morfema</b></caption>
   <tr>
-    <th></th><th><b>Contagem</b></th><th><b>P</b></th><th><b>-logP</b></th>
+    <th></th><th><b>Contagem</b></th><th><b>P</b></th><th><b>-LogP</b></th>
   </tr>
   <tr>
     <td>Morfema</th><th><?=$stats['morpheme_match']?></th><th><?=$stats['morpheme_probability']?></th><th><?=$stats['morpheme_logP']?></th>
