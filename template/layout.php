@@ -29,7 +29,7 @@
 
  </div>
  <footer>
-   <p>Ocun v0.2.Alpha</p>
+   <p>Ocun v0.2.Alpha.2</p>
  </footer>
 </body>
 </html>
